@@ -4,7 +4,7 @@ import dotenv from "dotenv"
 import userRoutes from './routes/user.route.js';
 import authRoutes from './routes/auth.route.js';
 
-const PORT = 3000;
+const PORT = 3005;
 
 
 dotenv.config()
