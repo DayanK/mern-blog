@@ -4,7 +4,7 @@ import dotenv from "dotenv"
 import userRoutes from './routes/user.route.js';
 import authRoutes from './routes/auth.route.js';
 
-const PORT = 3005;
+const PORT = 5001;
 
 
 dotenv.config()
@@ -22,7 +22,7 @@ app.use(express.json());
 
 
 app.listen(PORT, ()=>{
-    console.log(`Server is running on port ${PORT}!`);
+    console.log(`Server is running on port ${PORT}`);
 });
 
 app.use('/api/user', userRoutes);
