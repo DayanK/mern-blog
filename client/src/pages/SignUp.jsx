@@ -3,47 +3,46 @@ import { Link, useNavigate } from "react-router-dom";
 import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
 
 
-const SignUp = () => {
-const [formData, setFormData] = useState({});
-const [errorMessage, setErrorMessage] = useState(null);
-const [loading, setLoading] = useState(false);
-const navigate = useNavigate();
+export default function SignUp() {
+  const [formData, setFormData] = useState({});
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
+  const handleChange = (e) => {
+     setFormData({...formData, [e.target.id]: e.target.value.trim()});
+  };
 
-const handleChange = (e) => {
-  console.log("E", e.target.id)
-  setFormData({...formData, [e.target.id]:  e.target.value.trim()}); 
-};
-
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  if(!formData.username || !formData.email || !formData.password){
-    return setErrorMessage("Please fill out all fields");
-  }
-  try {
-    setLoading(true);
-    setErrorMessage("")
-    const res = await fetch('/api/auth/signup', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData),
-    })
-    const data = await res.json();
-
-    if(data.success === false){
-      return setErrorMessage(data.message);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.username || !formData.email || !formData.password) {
+      return setErrorMessage('Please fill out all fields.');
     }
-    setLoading(false);
-    if(res.ok === true){
-      navigate('/sign-in');
+    try {
+      setLoading(true);
+      setErrorMessage(null);
+      // check vite.config to congigure target route
+      const res = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+
+      console.log("data", data)
+
+      if (data.success === false) {
+        return setErrorMessage(data.message);
+      }
+      setLoading(false);
+      if(res.ok) {
+        navigate('/sign-in');
+      }
+    } catch (error) {
+      setErrorMessage(error.message);
+      setLoading(false);
     }
-
-  } catch (error) {
-    setErrorMessage(error.message);
-    setLoading(false);
-  }
-
-};
+  };
 
   return (
     <div className="min-h-screen mt-20">
@@ -83,9 +82,9 @@ const handleSubmit = async (e) => {
             <div>
               <Label value="Your password" />
               <TextInput
-                type="password"
-                placeholder="Password"
-                id="password"
+                type='password'
+                placeholder='Password'
+                id='password'
                 onChange={handleChange}
               />
             </div>
@@ -107,7 +106,7 @@ const handleSubmit = async (e) => {
           <div className="flex gap-2 text-sm mt-5">
             <span>Have an account ?</span>
             <Link to="/signup" className="text-blue-500">
-              Sign Up
+              Sign In
             </Link>
           </div>
           {errorMessage && (
@@ -121,4 +120,4 @@ const handleSubmit = async (e) => {
   );
 };
 
-export default SignUp;
+
